@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useState } from "react";
+import Footer from "./Footer";
+import Content from "./Content";
+import AddItem from "./AddItem";
 
 function App() {
+  const [itemList, setItemList] = useState([])
+
+
+
+const handleDelete = (id) =>{
+  const listItems = itemList.filter(item => item.id !== id)
+  setItemList(listItems)
+}
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <AddItem
+          sendForm={formItem => setItemList([...itemList, formItem])}
+        />
+
+        <ul>
+          {itemList.length ? (
+            itemList.map(item => (
+              <Content
+                key={item.id}
+                item={item}
+                handleDelete={handleDelete}
+              />
+            ))
+          ) : <p>Your List is Empty</p>}
+        </ul>
+        <Footer
+          length={itemList.length}
+        />
     </div>
+    
   );
 }
 
